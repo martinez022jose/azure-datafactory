@@ -1,0 +1,9 @@
+{
+	"name": "datafactory-proyecto-jose",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ef127394-91f8-4aa0-b770-045f99af1345",
+		"tenantId": "3048dc87-43f0-4100-9acb-ae1971c79395"
+	}
+}
