@@ -15,10 +15,80 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobFSReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"sink": {
+						"type": "ParquetSink",
+						"storeSettings": {
+							"type": "AzureBlobFSWriteSettings"
+						},
+						"formatSettings": {
+							"type": "ParquetWriteSettings"
+						}
+					},
 					"enableStaging": false
-				}
+				},
+				"inputs": [
+					{
+						"referenceName": "Cargas_csv",
+						"type": "DatasetReference",
+						"parameters": {
+							"file_name": {
+								"value": "@pipeline().parameters.Cargas_csv",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@pipeline().parameters.Folder_csv",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "Cargas_parquet",
+						"type": "DatasetReference",
+						"parameters": {
+							"file_name": {
+								"value": "@pipeline().parameters.Cargas_parquet",
+								"type": "Expression"
+							},
+							"folder": {
+								"value": "@pipeline().parameters.Folder_parquet",
+								"type": "Expression"
+							}
+						}
+					}
+				]
 			}
 		],
+		"parameters": {
+			"Cargas_csv": {
+				"type": "string",
+				"defaultValue": "cargas.csv"
+			},
+			"Cargas_parquet": {
+				"type": "string",
+				"defaultValue": "cargas.parquet"
+			},
+			"Folder_parquet": {
+				"type": "string",
+				"defaultValue": "datafactory-parquet"
+			},
+			"Folder_csv": {
+				"type": "string",
+				"defaultValue": "datafactory-input"
+			}
+		},
 		"annotations": []
 	}
 }
