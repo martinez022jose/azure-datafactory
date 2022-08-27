@@ -1,0 +1,49 @@
+{
+	"name": "pipeline_master",
+	"properties": {
+		"activities": [
+			{
+				"name": "pipeline_parametrizado",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "pipeline_parametrizado",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "mail_exitoso",
+				"type": "WebActivity",
+				"dependsOn": [
+					{
+						"activity": "pipeline_parametrizado",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"url": "https://prod-67.eastus.logic.azure.com:443/workflows/12002a21a14d43c0b294d1636020672d/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Nx4cd5b7GMJCSSUaJafQtKUs4GwoYJ79VJx3fRjU_LY",
+					"method": "POST",
+					"body": {
+						"value": "{\n    \"title\": \"PIPELINE EJECUTADO\",\n    \"message\": \"PIPELINE SUCCESSFULL, GREAT!\",\n    \"color\": \"GREED\",\n    \"dataFactoryName\": \"@{pipeline().DataFactory}\",\n    \"pipelineName\": \"@{pipeline().Pipeline}\",\n    \"pipelineRunId\": \"@{pipeline().RunId}\",\n    \"time\": \"@{utcNow()\n}\n",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"annotations": []
+	}
+}
